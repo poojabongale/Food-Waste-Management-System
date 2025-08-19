@@ -1,0 +1,2 @@
+# Food-Waste-Management-System
+Built a Food Waste Management System using SQLite and Python to connect food providers with receivers. The project involved performing Exploratory Data Analysis (EDA) on donation/sales data, predicting food quantity and the most demanded meal type, and executing SQL queries for insights such as providers/receivers by city and contact details. A Streamlit UI was developed to make the system interactive, allowing users to query the database, visualize results, and explore predictions in a user-friendly manner.
