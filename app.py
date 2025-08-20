@@ -1,4 +1,6 @@
 import streamlit as st
+import joblib
+import pandas as pd
 import queries
 from queries import (
     providers_and_receivers_by_city,
@@ -151,4 +153,32 @@ elif crud_action == "Delete":
     if st.button("Delete Provider"):
         msg = queries.delete_provider(provider_id)
         st.success(msg)
+
+# Load model & encoder
+meal_model = joblib.load("meal_model.pkl")
+encoder_meal = joblib.load("encoder_meal.pkl")
+
+st.subheader("🥢🍜 Meal Type prediction 🥢🍜")
+st.write("Enter provider details to predict the **Meal Type**")
+
+# Input fields
+provider_type = st.text_input("Provider Type (e.g., Restaurant, Cafe)")
+food_name = st.text_input("Food Name (e.g., Rice, Pasta)")
+location = st.text_input("Location (e.g., East Sheena, Downtown)")
+
+if st.button("Predict"):
+    if provider_type and food_name and location:
+        # Create DataFrame for input
+        input_df = pd.DataFrame([[provider_type, food_name, location]],
+                                columns=["Provider_Type", "Food_Name", "Location"])
+
+        # Encode input
+        input_encoded = encoder_meal.transform(input_df)
+
+        # Predict
+        prediction = meal_model.predict(input_encoded)[0]
+
+        st.success(f"✅ Predicted Meal Type: **{prediction}**")
+    else:
+        st.warning("⚠️ Please fill in all fields before predicting.")
 
